@@ -1,47 +1,72 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
+import Politics from '../components/Politics'
+import Sports from '../components/Sports'
+import Tech from '../components/Tech'
+import News from '../components/News'
 
 function Feed() {
 
-    const [articles, setArticles] = useState([])
+    const [fiveThirtyEightSportsArticles, setFiveThirtyEightSports] = useState([])
+    const [espnNflArticles, setEspnNfl] = useState([])
+    const [fiveThirtyEightPoliticsArticles, setFiveThirtyEightPolitics] = useState([])
 
-    function handleClick() {
-        fetch538()
-    }
+    useEffect(() => {
+        fetchFiveThirtyEightSports();
+        fetchEspnNfl();
+        fetchFiveThirtyEightPolitics();
+    }, [])
 
-    function fetch538() {
+    //Sports
+    function fetchFiveThirtyEightSports() {
         fetch('https://fivethirtyeight.com/sports/feed/')
         .then(resp => resp.text())
         .then(str => new window.DOMParser().parseFromString(str, "text/xml"))
-        .then(data => parseData(data))
+        .then(data => parseFiveThirtyEightSports(data))
     }
 
-    function parseData(data) {
+    function fetchEspnNfl() {
+        fetch('https://www.espn.com/espn/rss/nfl/news')
+        .then(resp => resp.text())
+        .then(str => new window.DOMParser().parseFromString(str, "text/xml"))
+        .then(data => parseEspnNfl(data))
+    }
+
+    function parseFiveThirtyEightSports(data) {
         let articleArray = Array.from(data.querySelectorAll("item"))
-        setArticles(articleArray)
+        setFiveThirtyEightSports(articleArray)
     }
 
-    function displayArticles(article) {
-        let title = article.querySelector("title").innerHTML
-        let artUrl = article.querySelector("link").innerHTML
-        let pubDate = article.querySelector('pubDate').innerHTML
-        return(
-            <div>
-                <a href={artUrl}><h4>{title}</h4></a>
-                <p>{pubDate}</p>
-            </div>
-        )
+    function parseEspnNfl(data) {
+        let articleArray = Array.from(data.querySelectorAll("item"))
+        setEspnNfl(articleArray)
     }
-    
+
+    //Politics
+    function fetchFiveThirtyEightPolitics() {
+        fetch('https://fivethirtyeight.com/politics/feed/')
+        .then(resp => resp.text())
+        .then(str => new window.DOMParser().parseFromString(str,"text/xml"))
+        .then(data => parseFiveThirtyEightPolitics(data))
+    }
+
+    function parseFiveThirtyEightPolitics(data) {
+        let articleArray = Array.from(data.querySelectorAll("item"))
+        setFiveThirtyEightPolitics(articleArray)
+    }
+
     return(    
         <div>
-            <button onClick={handleClick}>Pull Feed (538)</button>
-            <br></br>
-            {articles 
-            // ? console.log(articles[0])
-            ? articles.map(article => displayArticles(article))
-            : null}
-
-            
+            <h4>Sports</h4>
+                <Sports 
+                    fiveThirtyEight={fiveThirtyEightSportsArticles}
+                    espnNfl={espnNflArticles} />
+            <h4>Politics</h4>
+                <Politics 
+                    fiveThirtyEight={fiveThirtyEightPoliticsArticles} />
+            <h4>Tech</h4>
+                <Tech />
+            <h4>News</h4>
+                <News />
         </div>     
     )
 }
