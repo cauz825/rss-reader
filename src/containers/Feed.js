@@ -10,13 +10,33 @@ function Feed() {
     const [espnNflArticles, setEspnNfl] = useState([])
     const [fiveThirtyEightPoliticsArticles, setFiveThirtyEightPolitics] = useState([])
     const [vergeArticles, setVerge] = useState([])
+    const [nytArticles, setNyt] = useState([])
+    const [politicoArticles, setPolitico] = useState([])
 
     useEffect(() => {
+        fetchSports();
+        fetchPolitics();
+        fetchTech();
+        fetchNews();
+    }, [])
+
+    function fetchSports() {
         fetchFiveThirtyEightSports();
         fetchEspnNfl();
+    }
+
+    function fetchPolitics() {
         fetchFiveThirtyEightPolitics();
+        fetchPolitico();
+    }
+    
+    function fetchTech() {
         fetchVerge();
-    }, [])
+    }
+
+    function fetchNews() {
+        fetchNyt();
+    }
 
     //Sports
     function fetchFiveThirtyEightSports() {
@@ -51,22 +71,48 @@ function Feed() {
         .then(data => parseFiveThirtyEightPolitics(data))
     }
 
+    function fetchPolitico() {
+        fetch('https://www.politico.com/rss/politicopicks.xml')
+        .then(resp => resp.text())
+        .then(str => new window.DOMParser().parseFromString(str,'text/xml'))
+        .then(data => parsePolitico(data))
+    }
+
     function parseFiveThirtyEightPolitics(data) {
         let articleArray = Array.from(data.querySelectorAll("item"))
         setFiveThirtyEightPolitics(articleArray)
     }
 
+    function parsePolitico(data) {
+        let articleArray = Array.from(data.querySelectorAll("item"))
+        setPolitico(articleArray)
+
+    }
+
     //Tech
     function fetchVerge() {
-        fetch('https://www.theverge.com/rss/index.xml')
+        fetch('https://www.theverge.com/tech/rss/index.xml')
         .then(resp => resp.text())
         .then(str => new window.DOMParser().parseFromString(str, "text/xml"))
-        .then(data => console.log(data))
+        .then(data => parseVerge(data))
     }
 
     function parseVerge(data) {
         let articleArray = Array.from(data.querySelectorAll("entry"))
         setVerge(articleArray)
+    }
+
+    //News
+    function fetchNyt() {
+        fetch('https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml')
+        .then(resp => resp.text())
+        .then(str => new window.DOMParser().parseFromString(str,'text/xml'))
+        .then(data => parseNyt(data))
+    }
+
+    function parseNyt(data) {
+        let articleArray = Array.from(data.querySelectorAll("item"))
+        setNyt(articleArray)
     }
 
     return(    
@@ -77,12 +123,13 @@ function Feed() {
                     espnNfl={espnNflArticles} />
             <h4>Politics</h4>
                 <Politics 
-                    fiveThirtyEight={fiveThirtyEightPoliticsArticles} />
+                    fiveThirtyEight={fiveThirtyEightPoliticsArticles}
+                    politico={politicoArticles} />
             <h4>Tech</h4>
                 <Tech 
                     verge={vergeArticles} />
             <h4>News</h4>
-                <News />
+                <News nyt={nytArticles} />
         </div>     
     )
 }
