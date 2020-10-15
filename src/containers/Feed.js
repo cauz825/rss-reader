@@ -9,11 +9,13 @@ function Feed() {
     const [fiveThirtyEightSportsArticles, setFiveThirtyEightSports] = useState([])
     const [espnNflArticles, setEspnNfl] = useState([])
     const [fiveThirtyEightPoliticsArticles, setFiveThirtyEightPolitics] = useState([])
+    const [vergeArticles, setVerge] = useState([])
 
     useEffect(() => {
         fetchFiveThirtyEightSports();
         fetchEspnNfl();
         fetchFiveThirtyEightPolitics();
+        fetchVerge();
     }, [])
 
     //Sports
@@ -54,6 +56,19 @@ function Feed() {
         setFiveThirtyEightPolitics(articleArray)
     }
 
+    //Tech
+    function fetchVerge() {
+        fetch('https://www.theverge.com/rss/index.xml')
+        .then(resp => resp.text())
+        .then(str => new window.DOMParser().parseFromString(str, "text/xml"))
+        .then(data => console.log(data))
+    }
+
+    function parseVerge(data) {
+        let articleArray = Array.from(data.querySelectorAll("entry"))
+        setVerge(articleArray)
+    }
+
     return(    
         <div>
             <h4>Sports</h4>
@@ -64,7 +79,8 @@ function Feed() {
                 <Politics 
                     fiveThirtyEight={fiveThirtyEightPoliticsArticles} />
             <h4>Tech</h4>
-                <Tech />
+                <Tech 
+                    verge={vergeArticles} />
             <h4>News</h4>
                 <News />
         </div>     
