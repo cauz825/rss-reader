@@ -38,12 +38,22 @@ function Feed() {
         fetchNyt();
     }
 
+    function parseData(data) {
+        // console.log(data)
+        let articleArray = Array.from(data.querySelectorAll("item"))
+        let siteChannel = data.querySelector("channel")
+        let siteTitle = siteChannel.querySelector("title").innerHTML
+        console.log(siteTitle)
+        if(siteTitle === "Sports - FiveThirtyEight")
+            setFiveThirtyEightSports(articleArray)
+    }
+
     //Sports
     function fetchFiveThirtyEightSports() {
         fetch('https://fivethirtyeight.com/sports/feed/')
         .then(resp => resp.text())
         .then(str => new window.DOMParser().parseFromString(str, "text/xml"))
-        .then(data => parseFiveThirtyEightSports(data))
+        .then(data => parseData(data))
     }
 
     function fetchEspnNfl() {
@@ -53,10 +63,10 @@ function Feed() {
         .then(data => parseEspnNfl(data))
     }
 
-    function parseFiveThirtyEightSports(data) {
-        let articleArray = Array.from(data.querySelectorAll("item"))
-        setFiveThirtyEightSports(articleArray)
-    }
+    // function parseFiveThirtyEightSports(data) {
+    //     let articleArray = Array.from(data.querySelectorAll("item"))
+    //     setFiveThirtyEightSports(articleArray)
+    // }
 
     function parseEspnNfl(data) {
         let articleArray = Array.from(data.querySelectorAll("item"))
