@@ -36,7 +36,6 @@ function Feed() {
 
     function fetchNews() {
         fetchNyt();
-        fetchCnet();
     }
 
     //Sports
@@ -111,20 +110,9 @@ function Feed() {
         .then(data => parseNyt(data))
     }
 
-    function fetchCnet() {
-        fetch('https://www.cnet.com/rss/gaming/')
-        .then(resp => console.log(resp))
-        // .then(str => console.log(str))
-        // .then(data => console.log(data))
-    }
-
     function parseNyt(data) {
         let articleArray = Array.from(data.querySelectorAll("item"))
         setNyt(articleArray)
-    }
-
-    function parseCnet(data) {
-        let articleArray = Array.from(data.querySelectorAll())
     }
 
     return(    
