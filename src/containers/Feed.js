@@ -14,10 +14,10 @@ function Feed() {
     const [politicoArticles, setPolitico] = useState([])
 
     useEffect(() => {
-        // fetchSports();
+        fetchSports();
         fetchPolitics();
-        // fetchTech();
-        // fetchNews();
+        fetchTech();
+        fetchNews();
     }, [])
 
     function fetchSports() {
@@ -27,7 +27,7 @@ function Feed() {
 
     function fetchPolitics() {
         fetchFiveThirtyEightPolitics();
-        // fetchPolitico();
+        fetchPolitico();
     }
     
     function fetchTech() {
@@ -39,15 +39,20 @@ function Feed() {
     }
 
     function parseData(data) {
-        // console.log(data)
         let articleArray = Array.from(data.querySelectorAll("item"))
         let siteChannel = data.querySelector("channel")
         let siteTitle = siteChannel.querySelector("title").innerHTML
-        console.log(siteTitle)
+        // console.log(siteTitle)
         if(siteTitle === "Sports – FiveThirtyEight")
             setFiveThirtyEightSports(articleArray)
         if(siteTitle === "<![CDATA[www.espn.com - NFL]]>")
             setEspnNfl(articleArray)
+        if(siteTitle === "Politics – FiveThirtyEight")
+            setFiveThirtyEightPolitics(articleArray)
+        if(siteTitle === "Politics, Policy, Political News Top Stories")
+            setPolitico(articleArray)
+        if(siteTitle === "NYT &gt; Top Stories")
+            setNyt(articleArray)
     }
 
     //Sports
@@ -70,25 +75,14 @@ function Feed() {
         fetch('https://fivethirtyeight.com/politics/feed/')
         .then(resp => resp.text())
         .then(str => new window.DOMParser().parseFromString(str,"text/xml"))
-        .then(data => parseFiveThirtyEightPolitics(data))
+        .then(data => parseData(data))
     }
 
     function fetchPolitico() {
         fetch('https://www.politico.com/rss/politicopicks.xml')
         .then(resp => resp.text())
         .then(str => new window.DOMParser().parseFromString(str,'text/xml'))
-        .then(data => parsePolitico(data))
-    }
-
-    function parseFiveThirtyEightPolitics(data) {
-        let articleArray = Array.from(data.querySelectorAll("item"))
-        setFiveThirtyEightPolitics(articleArray)
-    }
-
-    function parsePolitico(data) {
-        let articleArray = Array.from(data.querySelectorAll("item"))
-        setPolitico(articleArray)
-
+        .then(data => parseData(data))
     }
 
     //Tech
@@ -109,12 +103,7 @@ function Feed() {
         fetch('https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml')
         .then(resp => resp.text())
         .then(str => new window.DOMParser().parseFromString(str,'text/xml'))
-        .then(data => parseNyt(data))
-    }
-
-    function parseNyt(data) {
-        let articleArray = Array.from(data.querySelectorAll("item"))
-        setNyt(articleArray)
+        .then(data => parseData(data))
     }
 
     return(    
