@@ -14,10 +14,10 @@ function Feed() {
     const [politicoArticles, setPolitico] = useState([])
 
     useEffect(() => {
-        fetchSports();
+        // fetchSports();
         fetchPolitics();
-        fetchTech();
-        fetchNews();
+        // fetchTech();
+        // fetchNews();
     }, [])
 
     function fetchSports() {
@@ -27,7 +27,7 @@ function Feed() {
 
     function fetchPolitics() {
         fetchFiveThirtyEightPolitics();
-        fetchPolitico();
+        // fetchPolitico();
     }
     
     function fetchTech() {
@@ -44,8 +44,10 @@ function Feed() {
         let siteChannel = data.querySelector("channel")
         let siteTitle = siteChannel.querySelector("title").innerHTML
         console.log(siteTitle)
-        if(siteTitle === "Sports - FiveThirtyEight")
+        if(siteTitle === "Sports – FiveThirtyEight")
             setFiveThirtyEightSports(articleArray)
+        if(siteTitle === "<![CDATA[www.espn.com - NFL]]>")
+            setEspnNfl(articleArray)
     }
 
     //Sports
@@ -60,17 +62,7 @@ function Feed() {
         fetch('https://www.espn.com/espn/rss/nfl/news')
         .then(resp => resp.text())
         .then(str => new window.DOMParser().parseFromString(str, "text/xml"))
-        .then(data => parseEspnNfl(data))
-    }
-
-    // function parseFiveThirtyEightSports(data) {
-    //     let articleArray = Array.from(data.querySelectorAll("item"))
-    //     setFiveThirtyEightSports(articleArray)
-    // }
-
-    function parseEspnNfl(data) {
-        let articleArray = Array.from(data.querySelectorAll("item"))
-        setEspnNfl(articleArray)
+        .then(data => parseData(data))
     }
 
     //Politics
