@@ -42,7 +42,6 @@ function Feed() {
         let articleArray = Array.from(data.querySelectorAll("item"))
         let siteChannel = data.querySelector("channel")
         let siteTitle = siteChannel.querySelector("title").innerHTML
-        // console.log(siteTitle)
         if(siteTitle === "Sports – FiveThirtyEight")
             setFiveThirtyEightSports(articleArray)
         if(siteTitle === "<![CDATA[www.espn.com - NFL]]>")
