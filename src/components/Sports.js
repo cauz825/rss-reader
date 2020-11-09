@@ -24,7 +24,7 @@ function Sports(props) {
     
     return(
         <div>
-            <h5>FiveThirtyEight - Sports</h5>
+            <h5>FiveThirtyEight : Sports</h5>
             {props.fiveThirtyEight
             ? props.fiveThirtyEight.slice(0,5).map(article => displayFiveThirtyEight(article))
             : null}
