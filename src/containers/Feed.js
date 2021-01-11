@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react'
-import Politics from '../components/Politics'
 import Sports from '../components/Sports'
 import Tech from '../components/Tech'
 import News from '../components/News'
@@ -8,10 +7,8 @@ function Feed() {
 
     const [fiveThirtyEightSportsArticles, setFiveThirtyEightSports] = useState([])
     const [espnNflArticles, setEspnNfl] = useState([])
-    const [fiveThirtyEightPoliticsArticles, setFiveThirtyEightPolitics] = useState([])
     const [vergeArticles, setVerge] = useState([])
     const [nytArticles, setNyt] = useState([])
-    const [politicoArticles, setPolitico] = useState([])
 
     useEffect(() => {
         fetchSports();
@@ -86,10 +83,6 @@ function Feed() {
                 <Sports 
                     fiveThirtyEight={fiveThirtyEightSportsArticles}
                     espnNfl={espnNflArticles} />
-            <h4>Politics</h4>
-                <Politics 
-                    fiveThirtyEight={fiveThirtyEightPoliticsArticles}
-                    politico={politicoArticles} />
             <h4>Tech</h4>
                 <Tech 
                     verge={vergeArticles} />
