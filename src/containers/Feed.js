@@ -15,7 +15,6 @@ function Feed() {
 
     useEffect(() => {
         fetchSports();
-        fetchPolitics();
         fetchTech();
         fetchNews();
     }, [])
@@ -41,10 +40,6 @@ function Feed() {
             setFiveThirtyEightSports(articleArray)
         if(siteTitle === "<![CDATA[www.espn.com - NFL]]>")
             setEspnNfl(articleArray)
-        if(siteTitle === "Politics – FiveThirtyEight")
-            setFiveThirtyEightPolitics(articleArray)
-        if(siteTitle === "Politics, Policy, Political News Top Stories")
-            setPolitico(articleArray)
         if(siteTitle === "NYT &gt; Top Stories")
             setNyt(articleArray)
     }
@@ -61,21 +56,6 @@ function Feed() {
         fetch('https://www.espn.com/espn/rss/nfl/news')
         .then(resp => resp.text())
         .then(str => new window.DOMParser().parseFromString(str, "text/xml"))
-        .then(data => parseData(data))
-    }
-
-    //Politics
-    function fetchFiveThirtyEightPolitics() {
-        fetch('https://fivethirtyeight.com/politics/feed/')
-        .then(resp => resp.text())
-        .then(str => new window.DOMParser().parseFromString(str,"text/xml"))
-        .then(data => parseData(data))
-    }
-
-    function fetchPolitico() {
-        fetch('https://www.politico.com/rss/politicopicks.xml')
-        .then(resp => resp.text())
-        .then(str => new window.DOMParser().parseFromString(str,'text/xml'))
         .then(data => parseData(data))
     }
 
