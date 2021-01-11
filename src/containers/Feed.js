@@ -25,11 +25,6 @@ function Feed() {
         fetchEspnNfl();
     }
 
-    function fetchPolitics() {
-        fetchFiveThirtyEightPolitics();
-        fetchPolitico();
-    }
-    
     function fetchTech() {
         fetchVerge();
     }
